@@ -2,6 +2,8 @@ const { Client } = require('@elastic/elasticsearch')
 const logger = require('loglevel')
 const lighthouse = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');
+const { getSystemErrorMap } = require('util');
+const { exit } = require('process');
 
 const client = new Client({
   node: 'http://localhost:9200'
@@ -66,6 +68,21 @@ const urls = [
     {
         "site": "bing",
         "url" : "https://www.bing.com/search?q=qwant&form=QBLH&sp=-1&pq=toul&sc=8-4&qs=n&sk=&",
+        "name" : "search_qwant"
+    },
+    {
+        "site": "ecosia",
+        "url" : "https://www.ecosia.org/",
+        "name" : "home"
+    },
+    {
+        "site": "ecosia",
+        "url" : "https://www.ecosia.org/search?q=toulon",
+        "name" : "search_city"
+    },
+    {
+        "site": "ecosia",
+        "url" : "https://www.ecosia.org/search?q=qwant",
         "name" : "search_qwant"
     }
 ]
@@ -139,18 +156,38 @@ async function run () {
 
         const runnerResult = await lighthouse(urlToCrawl.url, options, lhConfig);
 
-        const auditsList = Object.values(runnerResult.lhr.audits)
-        .filter(audit => {
-            return audit.hasOwnProperty("numericValue") && audit.numericValue !== null
-        }).map(audit => {
-            return {
-                id: audit.id,
-                title: audit.title,
-                numericValue: audit.numericValue,
-                numericUnit: audit.numericUnit,
-                displayValue: audit.displayValue
-            }
-        })
+        const auditDomains = {
+            id: 'network-hosts-count',
+            title: 'Distinct hosts',
+            numericValue: runnerResult.lhr.audits['network-server-latency'].details.items.length,
+            numericUnit: "",
+            displayValue: ""
+        }
+
+        const auditResourceSummary = {
+            id: 'resource-summary-v2',
+            title: 'Resource summary',
+            numericValue: runnerResult.lhr.audits['resource-summary'].details.items[0].requestCount,
+            numericUnit: "",
+            displayValue: ""
+        }
+
+        const auditsList = Object
+            .values(runnerResult.lhr.audits)
+            .filter(audit => {
+                return typeof audit.numericValue != 'undefined'
+            }).map(audit => {
+                return {
+                    id: audit.id,
+                    title: audit.title,
+                    numericValue: audit.numericValue,
+                    numericUnit: audit.numericUnit,
+                    displayValue: audit.displayValue
+                }
+            })
+
+        auditsList.push(auditDomains)
+        auditsList.push(auditResourceSummary)
 
         const audits = Object.assign({}, ...auditsList.map((x) => ({[x.id]: x})));
 

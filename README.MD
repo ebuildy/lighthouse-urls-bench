@@ -1,9 +1,15 @@
-Run lighthouse benchmarks on URLs anywhere, then store audits on elasticsearch, end analyze results on kibana.
+Run HTTP & lighthouse benchmarks on URLs anywhere, then store audits on elasticsearch, end analyze results on kibana.
 
 ## The idea
 
-This project allow you to run lighthouse analyze on several URLs (on different web sites), using a chrome-less browser.
-Audits data is stored in elasticsearch, then can be data-viz'ed with kibana.
+This project allow you to analyze quality of URLs & web pages.
+
+There are 2 analyzers:
+- nettime : get time duration of various stages of a HTTP/S request, like DNS lookup, TLS handshake, Time to First Byte etc..
+- lighthouse : run on a chrome-less browser, analyze web vitals metrics
+
+Analyze is run against several URLs (on different web sites).
+All data is stored in elasticsearch, then can be data-viz'ed with kibana.
 
 ### use-case
 
@@ -18,6 +24,7 @@ Audits data is stored in elasticsearch, then can be data-viz'ed with kibana.
 * elasticsearch : storage
 * kibana        : data-viz
 * nodejs        : runtime
+* nettime       : nodejs library
 * lighthouse    : bench framework
 * docker-compose: infra
 
@@ -33,7 +40,7 @@ docker-compose up -d
 
 open http://localhost:5601/ 
 
-2) Configure ``index.js`` URLs
+2) Configure ``src/urls.js`` , ``src/cookies.js`` files
 
 3) Run bench script
 
@@ -41,5 +48,5 @@ open http://localhost:5601/
 
 ```
 npm install
-node index.js
+node src/index.mjs
 ```

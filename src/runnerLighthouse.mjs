@@ -1,5 +1,6 @@
 import lighthouse from 'lighthouse'
 import chromeLauncher from 'chrome-launcher'
+import { cookies as sitesCookies } from './cookies.mjs'
 
 const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
 
@@ -26,13 +27,6 @@ const lhConfig = {
       skipAudits: ['uses-http2']
     },
   }
-
-
-
-export function init() {
-
-
-}
 
 export async function run(urlToCrawl, store) {
     const runnerResult = await lighthouse(urlToCrawl.url, options, lhConfig);
@@ -74,6 +68,9 @@ export async function run(urlToCrawl, store) {
 
     await store({
         '@timestamp' : new Date(),
+        device: {
+            type: 'desktop'
+        },
         meta : urlToCrawl,
         audits
     })

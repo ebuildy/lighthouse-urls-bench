@@ -18,6 +18,7 @@ async function run () {
         console.log("=======> Analyzing " + urlToCrawl.url)
 
         await runNet(urlToCrawl, store)
+        await runLighthouse(urlToCrawl, store)
 
         urlIndex ++;
 

@@ -15,6 +15,11 @@ export const urls = [
         "name" : "search_qwant"
     },
     {
+        "site" : "qwant",
+        "url" : "https://www.qwant.com/?q=vol+toulon+paris&t=web",
+        "name" : "search_flight"
+    },
+    {
         "site": "qwant_lite",
         "url" : "https://lite.qwant.com",
         "name" : "home"

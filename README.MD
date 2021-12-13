@@ -4,9 +4,10 @@ Run HTTP & lighthouse benchmarks on URLs anywhere, then store audits on elastics
 
 This project allow you to analyze quality of URLs & web pages.
 
-There are 2 analyzers:
+There are 3 analyzers:
 - nettime : get time duration of various stages of a HTTP/S request, like DNS lookup, TLS handshake, Time to First Byte etc..
 - lighthouse : run on a chrome-less browser, analyze web vitals metrics
+- SSL : https://github.com/drwetter/testssl.sh
 
 Analyze is run against several URLs (on different web sites).
 All data is stored in elasticsearch, then can be data-viz'ed with kibana.

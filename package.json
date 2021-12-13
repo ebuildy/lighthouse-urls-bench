@@ -1,10 +1,8 @@
 {
   "dependencies": {
     "@elastic/elasticsearch": "^7.15.0",
-    "big-json": "^3.1.0",
     "lighthouse": "^9.1.0",
     "loglevel": "^1.8.0",
-    "nettime": "^3.0.0",
-    "request": "^2.88.2"
+    "nettime": "^4.0.0"
   }
 }

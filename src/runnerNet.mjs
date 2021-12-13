@@ -8,10 +8,11 @@ import {
 import { cookies as sitesCookies } from './cookies.mjs'
 
 export async function run(urlToCrawl, store) {
-    const result = await nettime({
+    const results = await nettime({
         url: urlToCrawl.url,
         includeHeaders: true,
         returnResponse: true,
+        followRedirects: true,
         headers : {
             'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
             'accept-encoding': "gzip, deflate, br",
@@ -32,34 +33,34 @@ export async function run(urlToCrawl, store) {
         }
     });
 
+    const result = results.pop()
+
     if (result.statusCode === 302) {
-        logger.debug('Follow redirect')
+        logger.error('We should not see redirection ...')
         console.log(result)
     }
             
-    if (result.statusCode === 200) {
-        let timings = result.timings
+    let timings = result.timings
 
-        const metrics = {
-            statusCode : result.statusCode,
-            socketOpen : getMilliseconds(timings.socketOpen),
-            dnsLookup : getMilliseconds(timings.dnsLookup),
-            tcpConnection : getMilliseconds(nettime.getDuration(timings.socketOpen, timings.tcpConnection)),
-            tlsHandshake : getMilliseconds(nettime.getDuration(timings.tcpConnection ,timings.tlsHandshake)),
-            firstByte : getMilliseconds(nettime.getDuration(timings.tlsHandshake, timings.firstByte)),
-            contentTransfer : getMilliseconds(nettime.getDuration(timings.firstByte, timings.contentTransfer)),
-            socketClose : getMilliseconds(nettime.getDuration(timings.contentTransfer,timings.socketClose)),
-            responseSize : Buffer.byteLength(result.response),
-            headers : result.headers
-        }
-
-        await store({
-            '@timestamp' : new Date(),
-            device: {
-                type: 'desktop'
-            },
-            meta : urlToCrawl,
-            http : metrics
-        })
+    const metrics = {
+        statusCode : result.statusCode,
+        socketOpen : getMilliseconds(timings.socketOpen),
+        dnsLookup : getMilliseconds(timings.dnsLookup),
+        tcpConnection : getMilliseconds(nettime.getDuration(timings.socketOpen, timings.tcpConnection)),
+        tlsHandshake : getMilliseconds(nettime.getDuration(timings.tcpConnection ,timings.tlsHandshake)),
+        firstByte : getMilliseconds(nettime.getDuration(timings.tlsHandshake, timings.firstByte)),
+        contentTransfer : getMilliseconds(nettime.getDuration(timings.firstByte, timings.contentTransfer)),
+        socketClose : getMilliseconds(nettime.getDuration(timings.contentTransfer,timings.socketClose)),
+        responseSize : Buffer.byteLength(result.response),
+        headers : result.headers
     }
+
+    await store({
+        '@timestamp' : new Date(),
+        device: {
+            type: 'desktop'
+        },
+        meta : urlToCrawl,
+        http : metrics
+    })
 }

@@ -7,7 +7,7 @@ This project allow you to analyze quality of URLs & web pages.
 There are 3 analyzers:
 - nettime : get time duration of various stages of a HTTP/S request, like DNS lookup, TLS handshake, Time to First Byte etc..
 - lighthouse : run on a chrome-less browser, analyze web vitals metrics
-- SSL : https://github.com/drwetter/testssl.sh
+- SSL : https://github.com/drwetter/testssl.sh (@todo)
 
 Analyze is run against several URLs (on different web sites).
 All data is stored in elasticsearch, then can be data-viz'ed with kibana.
@@ -31,17 +31,24 @@ All data is stored in elasticsearch, then can be data-viz'ed with kibana.
 
 https://github.com/GoogleChrome/lighthouse/blob/HEAD/docs/readme.md#using-programmatically
 
-## The project
+## Usage
 
-1) Run ES/kibana
+1) Configure
+
+```
+cp config_example.yaml config.yaml
+nano config.yaml
+```
+
+2) Run ES/kibana
+
+There is a local docker-compose , or you can use any URL
 
 ```
 docker-compose up -d
 ```
 
 open http://localhost:5601/ 
-
-2) Configure ``src/urls.js`` , ``src/cookies.js`` files
 
 3) Run bench script
 

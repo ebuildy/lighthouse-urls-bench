@@ -1,15 +1,19 @@
-import { urls } from './urls.mjs'
 import { init as initES, store } from './elasticsearch.mjs'
-import { run as runNet } from './runnerNet.mjs'
-import { run as runLighthouse } from './runnerLighthouse.mjs'
+import { init as initRunnerNet, run as runNet } from './runnerNet.mjs'
+import { init as initRunnerLighthouse, run as runLighthouse } from './runnerLighthouse.mjs'
+import { configure } from './config.mjs'
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 async function run () {
 
-    var urlIndex = 0;
+    let urlIndex = 0
+    const config = configure('./config.yaml')
+    const urls = config.urls
 
-    initES();
+    initRunnerNet(config)
+    initRunnerLighthouse(config)
+    initES(config.elasticsearch)
 
     while(true) {
 

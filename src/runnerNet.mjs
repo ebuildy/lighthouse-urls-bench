@@ -5,7 +5,11 @@ import {
     computeAverageDurations, createTimingsFromDurations
 } from 'nettime/lib/timings.js'
 
-import { cookies as sitesCookies } from './cookies.mjs'
+let gblCookies
+
+export function init(config) {
+    gblCookies = config.cookies
+}
 
 export async function run(urlToCrawl, store) {
     const results = await nettime({
@@ -18,7 +22,7 @@ export async function run(urlToCrawl, store) {
             'accept-encoding': "gzip, deflate, br",
             'accept-language': "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
             'cache-control': "max-age=0",
-            'cookie': sitesCookies [urlToCrawl.site],
+            'cookie': gblCookies[urlToCrawl.site],
             'dnt':  "1",
             'referer': "https://www.google.com/",
             'sec-ch-ua': 'Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',

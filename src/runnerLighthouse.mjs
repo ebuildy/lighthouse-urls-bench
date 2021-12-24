@@ -1,17 +1,14 @@
 import lighthouse from 'lighthouse'
 import chromeLauncher from 'chrome-launcher'
-import { cookies as sitesCookies } from './cookies.mjs'
+import _ from 'lodash'
 
-const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
-
-const options = {
+const defaultOptions = {
     logLevel: 'warn', 
     output: 'json', 
-    onlyCategories: ['performance'], 
-    port: chrome.port
+    onlyCategories: ['performance']
 }
 
-const lhConfig = {
+const defaultConfig = {
     extends: 'lighthouse:default',
     settings: {
         formFactor: "desktop",
@@ -22,14 +19,23 @@ const lhConfig = {
             "height": 2000,
             "deviceScaleFactor": 1,
             "disabled": false
-          },
-      emulatedUserAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36",
-      skipAudits: ['uses-http2']
-    },
-  }
+        },
+        emulatedUserAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36",
+        skipAudits: ['uses-http2']
+    }
+}
+
+let lhOptions, lhConfig, chrome
+
+export async function init(config) {
+    chrome = await chromeLauncher.launch(config.lighthouse.chrome)
+
+    lhOptions = _.merge(defaultOptions, config.lighthouse.options, { port: chrome.port })
+    lhConfig = _.merge(defaultConfig, config.lighthouse.config)    
+}
 
 export async function run(urlToCrawl, store) {
-    const runnerResult = await lighthouse(urlToCrawl.url, options, lhConfig);
+    const runnerResult = await lighthouse(urlToCrawl.url, lhOptions, lhConfig)
 
     const auditDomains = {
         id: 'network-hosts-count',

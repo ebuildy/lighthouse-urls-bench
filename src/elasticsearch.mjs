@@ -1,13 +1,18 @@
 import { Client } from '@elastic/elasticsearch'
 import logger from 'loglevel'
+import _ from 'lodash'
 
-const client = new Client({
-    node: 'http://localhost:9200'
-})
+let client, esIndexName, extraMeta;
 
-const esIndexName = 'lighthouse-results-v2'
+export async function init(config) {
 
-export async function init() {
+    esIndexName = config.index;
+    extraMeta = config.meta
+
+    client = new Client({
+        node: config.url
+    })
+
     try {
         await client.indices.create({
             index: esIndexName,
@@ -39,6 +44,9 @@ export async function init() {
 }
 
 export async function store(body) {
+
+    body = _.merge(body, { meta : extraMeta })
+
     try {
         await client.index({
             index: esIndexName,

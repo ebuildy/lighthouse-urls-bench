@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "@elastic/elasticsearch": "^7.15.0",
+    "js-yaml": "^4.1.0",
     "lighthouse": "^9.1.0",
+    "lodash": "^4.17.21",
     "loglevel": "^1.8.0",
     "nettime": "^4.0.0"
   }

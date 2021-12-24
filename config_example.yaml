@@ -1,0 +1,44 @@
+elasticsearch:
+  url: http://localhost:9200
+  index: lighthouse-results-v2
+  meta:
+    city: Sanary
+    country: France
+    user: Tom
+
+cookies:
+  qwant: ""
+  qwant_lite : ""
+  google: ""
+  bing: ""
+  duckduckgo: ""
+  ecosia: ""
+
+lighthouse:
+  chrome: {}
+  #  chromeFlags: ['--headless']
+  options: {}
+  #  logLevel: 'warn'
+  config: {}
+  #  formFactor: "desktop"
+
+urls:
+- site: qwant
+  url: https://www.qwant.com
+  name: home
+- site: qwant_lite
+  url: https://lite.qwant.com
+  name: home
+- site: duckduckgo
+  url: https://duckduckgo.com/
+  name: home
+  name: search_qwant
+- site: google
+  url: https://www.google.com/
+  name: home
+- site: bing
+  url: https://www.bing.com/
+  name: home
+- site: ecosia
+  url: https://www.ecosia.org/
+  name: home

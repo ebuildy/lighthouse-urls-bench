@@ -33,6 +33,21 @@ https://github.com/GoogleChrome/lighthouse/blob/HEAD/docs/readme.md#using-progra
 
 ## Usage
 
+### requirements
+
+* nodeJS (tested on v17.2.0)
+* Google Chrome
+* elasticsearch 7.X (remote or run via Docker)
+
+### getting started
+
+0) Clone project
+
+```
+git clone https://github.com/ebuildy/lighthouse-urls-bench.git
+cd lighthouse-urls-bench
+```
+
 1) Configure
 
 ```
@@ -42,7 +57,7 @@ nano config.yaml
 
 2) Run ES/kibana
 
-There is a local docker-compose , or you can use any URL
+If needed, there is a local docker-compose , or you can use any URL
 
 ```
 docker-compose up -d
@@ -58,3 +73,7 @@ open http://localhost:5601/
 npm install
 node src/index.mjs
 ```
+
+### <!> bugs <!>
+
+* some web sites need cookies to work: you can disable ``headless`` mode to see what happen under the hood, open a new tab on chrome in order to interact with cookie wall.

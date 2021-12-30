@@ -10,7 +10,10 @@ export async function init(config) {
     extraMeta = config.meta
 
     client = new Client({
-        node: config.url
+        node: config.url,
+        ssl: {
+            rejectUnauthorized: false
+          }
     })
 
     try {
@@ -39,7 +42,7 @@ export async function init(config) {
         });
     }
     catch(e) {
-        logger.error(e.meta.body.error.reason)
+        logger.error(e.meta.body ? e.meta.body.error.reason : e.meta)
     }
 }
 
@@ -53,6 +56,6 @@ export async function store(body) {
             body
         })
     } catch(e) {
-        logger.error(e.meta.body.error)
+        logger.error(e.meta.body ? e.meta.body.error : e.meta)
     }
 }

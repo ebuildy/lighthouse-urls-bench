@@ -32,7 +32,6 @@ urls:
 - site: duckduckgo
   url: https://duckduckgo.com/
   name: home
-  name: search_qwant
 - site: google
   url: https://www.google.com/
   name: home

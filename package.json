@@ -1,10 +1,45 @@
 {
+  "engines": {
+    "node": ">=21.0"
+  },
+  "scripts": {
+    "build": "npx --experimental-detect-module tsc",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "type-check": "tsc --allowJs --checkJs --noEmit --target es2019 *.js"
+  },
   "dependencies": {
-    "@elastic/elasticsearch": "^7.15.0",
+    "@elastic/elasticsearch": "^8.11.0",
+    "chrome-launcher": "^1.1.0",
+    "commander": "^11.1.0",
+    "delay": "^6.0.0",
+    "fastq": "^1.17.0",
+    "figlet": "^1.7.0",
     "js-yaml": "^4.1.0",
-    "lighthouse": "^9.1.0",
+    "lighthouse": "^11.5.0",
     "lodash": "^4.17.21",
     "loglevel": "^1.8.0",
-    "nettime": "^4.0.0"
-  }
+    "nettime": "^4.0.0",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node21": "^21.0.1",
+    "@tsconfig/recommended": "^1.0.3",
+    "@tsconfig/strictest": "^2.0.2",
+    "@types/js-yaml": "^4.0.9",
+    "@types/lodash": "^4.14.202",
+    "@types/node": "^20.11.10",
+    "@types/xml2js": "^0.4.14",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.25.2",
+    "prettier": "^3.2.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "type": "module"
 }

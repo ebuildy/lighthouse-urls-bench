@@ -41,12 +41,19 @@ async function main() {
   const config = await configFactory.build(options.config)
   const store = new ElasticsearchStore(config)
   const analyzerNet = new NetAnalyzer(config)
-  const analyzerLighthouse = new LighthouseAnalyzer(config)
+  const analyzers: Analyzer[] = [analyzerNet]
 
-  const analyzers = [analyzerNet, analyzerLighthouse]
+  if (config.lighthouse.enabled) {
+    const analyzerLighthouse = new LighthouseAnalyzer(config)
+
+    await analyzerLighthouse.init()
+
+    console.log(`+ register analyzer LighthouseAnalyzer`)
+
+    analyzers.push(analyzerLighthouse)
+  }
 
   await store.init()
-  await analyzerLighthouse.init()
 
   let urlIndex = 0
 

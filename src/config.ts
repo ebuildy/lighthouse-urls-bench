@@ -18,6 +18,7 @@ type ConfigStore = {
 }
 
 type ConfigLighthouse = {
+  enabled: boolean
   chromeOptions: Options
   options: Record<string, string>
   config: Record<string, string>
